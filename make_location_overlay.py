@@ -6,7 +6,7 @@
 # copyright		   :		(c) 2019
 # licence		   : 		GNU General Public License version 3
 # description	   :		Creates HTML and map PNG for Location
-# version          :        1.0
+# version          :        1.1 Fixes filenames
 #
 ################################################################################################
 
@@ -16,7 +16,19 @@ import matplotlib.pyplot as plt
 import geotiler
 import dateutil.parser as parser
 import sys
+import unicodedata
 
+
+### String Formatter - remove diacritics ###
+def strip_accents(text):
+    try:
+        text = unicode(text, 'utf-8')
+    except (TypeError, NameError): # unicode is a default on python 3
+        pass
+    text = unicodedata.normalize('NFD', text)
+    text = text.encode('ascii', 'ignore')
+    text = text.decode("utf-8")
+    return str(text)
 
 ### Get Map File ###
 def getMapPngFile(lat,lon,filename):
@@ -57,7 +69,7 @@ def createHtmlFile(htmlFile, locName, mapFile, dateStr, factStrs):
     f.write("    <title>Location_template</title>\n")
     f.write("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n")
     f.write("    <meta charset=\"UTF-8\">\n")
-    f.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"obscura.css\">\n")
+    f.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"../css_etc/obscura.css\">\n")
     f.write("  </head>\n")
     f.write("  <body>\n")
 
@@ -137,8 +149,10 @@ def main():
         # Create Filenames
         mapFile = "maps/" + LOCATION_NAME + ".png"
         htmlFile = "html/" + LOCATION_NAME + ".html"
-        mapFileSafe = "_".join( mapFile.split() )
-        htmlFileSafe = "_".join( htmlFile.split() )
+        mapFileSafe = strip_accents(mapFile)
+        htmlFileSafe = strip_accents(htmlFile)
+        mapFileSafe = "_".join( mapFileSafe.split() )
+        htmlFileSafe = "_".join( htmlFileSafe.split() )
 
         # Create Map
         getMapPngFile(LATf,LONf,mapFileSafe)
