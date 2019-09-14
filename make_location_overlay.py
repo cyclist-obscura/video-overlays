@@ -35,17 +35,18 @@ def getMapPngFile(lat,lon,filename):
     lats = []
     lons = []
     # Small Scale
-    bbox = (lon-0.125, lat-0.0625, lon+0.125, lat+0.0625)
+    #bbox = (lon-0.125, lat-0.0625, lon+0.125, lat+0.0625)
     fig = plt.figure(figsize=(5, 5))
     ax = plt.subplot(111)
     #
     # download background map using OpenStreetMap
     #
-    mm = geotiler.Map(extent=bbox, zoom=11)
+    mm = geotiler.Map(center=(lon, lat), zoom=11, size=(512, 512))
     img = geotiler.render_map(mm)
     #
     # create basemap
     #
+    bbox = mm.extent
     map = Basemap(llcrnrlon=bbox[0], llcrnrlat=bbox[1],
                 urcrnrlon=bbox[2], urcrnrlat=bbox[3],
                 projection='merc', ax=ax)
