@@ -35,13 +35,12 @@ def getMapPngFile(lat,lon,filename):
     lats = []
     lons = []
     # Small Scale
-    #bbox = (lon-0.125, lat-0.0625, lon+0.125, lat+0.0625)
     fig = plt.figure(figsize=(5, 5))
     ax = plt.subplot(111)
     #
     # download background map using OpenStreetMap
     #
-    mm = geotiler.Map(center=(lon, lat), zoom=11, size=(512, 512))
+    mm = geotiler.Map(center=(lon, lat), zoom=11, size=(512, 512), provider='stamen-toner')
     img = geotiler.render_map(mm)
     #
     # create basemap
