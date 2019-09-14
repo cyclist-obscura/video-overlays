@@ -92,7 +92,7 @@ def createHtmlFile(htmlFile, locName, mapFile, dateStr, factStrs):
 
     # Write map
     mapUrl = "../" + mapFile
-    f.write("    <div id=\"mapid\" style=\"top: 50px; left: 1420px;\">\n")
+    f.write("    <div class=\"fixed-map\">\n")
     f.write("      <img src=\"" + mapUrl + "\">\n")
     f.write("    </div>\n")
 
